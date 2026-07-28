@@ -1,0 +1,35 @@
+{
+    "name": "webisters/agent-skills",
+    "description": "AI agent skills and rules for Webisters PHP framework projects",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "webisters",
+        "claude",
+        "cursor",
+        "codex",
+        "agent",
+        "skills",
+        "rules",
+        "ai"
+    ],
+    "authors": [
+        {
+            "name": "Hafiz Muhammad Moaz",
+            "email": "hafizmoazkhalid@gmail.com",
+            "homepage": "https://github.com/HafizMMoaz"
+        }
+    ],
+    "homepage": "https://webisters.com/packages/agent-skills",
+    "support": {
+        "email": "support@webisters.com",
+        "issues": "https://github.com/webisters/agent-skills/issues",
+        "forum": "https://github.com/webisters/forum",
+        "source": "https://github.com/webisters/agent-skills",
+        "docs": "https://webisters.com"
+    },
+    "require": {
+        "php": ">=8.2"
+    },
+    "minimum-stability": "stable"
+}

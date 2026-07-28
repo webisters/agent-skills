@@ -1,0 +1,63 @@
+---
+description: Webisters PHP framework project rules - routing, services, conventions
+globs: ["**/*.php", "boot/**", "config/**", "app/**"]
+alwaysApply: true
+---
+
+# Webisters Framework
+
+PHP 8.2+ MVC framework. Entry class is `App` (project root `App.php`), extends `Framework\MVC\App`.
+
+## Directory layout
+
+- `App.php` - project App class
+- `boot/` - `init.php`, `constants.php`, `helpers.php`, `app.php`, `routes.php`
+- `app/Controllers/` - `App\Controllers\*`, extend `Framework\MVC\Controller`
+- `app/Models/` - `App\Models\*`, extend `Framework\MVC\Model`
+- `app/Views/` - PHP view templates
+- `config/` - one PHP file per service, returns `['default' => [...]]`
+- `public/index.php` - HTTP entry point
+- `storage/` - writable runtime files
+
+## Service container
+
+```php
+App::database()    App::router()     App::request()    App::response()
+App::session()     App::cache()      App::view()        App::logger()
+App::mailer()      App::validation() App::language()   App::console()
+App::migrator()    App::antiCsrf()
+```
+
+All accept optional `$instance = 'default'`.
+
+## Routing
+
+```php
+// boot/routes.php
+App::router()->serve(null, static function (RouteCollection $routes) : void {
+    $routes->namespace('App\Controllers', [
+        $routes->get('/', 'Home::index', 'home.index'),
+        $routes->post('/users', 'Users::store', 'users.store'),
+    ]);
+    $routes->notFound(static fn () => respond_not_found());
+});
+```
+
+## Conventions
+
+- All PHP files: `<?php declare(strict_types=1);`
+- Config files return `['default' => [...]]`; env values via `env('key', 'default')`
+- Do not modify `vendor/` or the license header comment block in PHP files
+
+## Commands
+
+```bash
+php webisters start                  # dev server port 8000
+php webisters route:list             # list routes
+php webisters make:controller <Name>
+php webisters make:model <Name>
+php webisters make:view <path/name>
+php webisters migrate:up
+vendor/bin/phpunit
+vendor/bin/php-cs-fixer fix
+```
