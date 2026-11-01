@@ -18,9 +18,11 @@ $_ENV['database.default.config.schema']   = 'myapp';
 $_ENV['database.default.config.host']     = 'localhost';
 $_ENV['database.default.config.port']     = 3306;
 
-// Cache (Redis example)
-$_ENV['cache.default.handler'] = 'redis';
-$_ENV['cache.default.host']    = '127.0.0.1';
+// Cache (Redis example). The driver is a class name, and its own options go
+// under 'configs'. There is no 'handler' key.
+$_ENV['cache.default.class']   = Framework\Cache\RedisCache::class;
+$_ENV['cache.default.configs'] = ['host' => '127.0.0.1', 'port' => 6379];
+$_ENV['cache.default.prefix']  = 'app-';
 
 // Logger
 $_ENV['logger.default.destination'] = __DIR__ . '/storage/logs/app.log';
@@ -49,14 +51,38 @@ Any service supports multiple named instances:
 
 ```php
 // config/cache.php
+use Framework\Cache\MemcachedCache;
+use Framework\Cache\RedisCache;
+
 return [
-    'default' => ['handler' => 'redis', ...],
-    'session' => ['handler' => 'memcached', ...],
+    'default' => [
+        'class' => RedisCache::class,
+        'configs' => ['host' => '127.0.0.1'],
+        'prefix' => 'app-',
+    ],
+    'session' => [
+        'class' => MemcachedCache::class,
+        'configs' => ['servers' => [['host' => '127.0.0.1', 'port' => 11211]]],
+        'prefix' => 'session-',
+    ],
 ];
 
 // Usage
 App::cache('session')->set('key', 'value');
 ```
+
+### Cache config keys
+
+`App::cache()` reads exactly these, so do not invent others:
+
+| Key | Meaning |
+|---|---|
+| `class` | the driver class, for example `Framework\Cache\FilesCache::class` |
+| `configs` | the driver's own options, passed to its constructor |
+| `prefix` | prepended to every key, or a subdirectory on `FilesCache` |
+| `serializer` | a `Framework\Cache\Serializer` case or its string value |
+| `default_ttl` | seconds, used when a call passes no TTL |
+| `logger_instance` | the `config/logger.php` instance to log through |
 
 ## Available config files
 
