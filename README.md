@@ -14,6 +14,7 @@ AGENTS.md                          # OpenAI Codex / compatible agents
   webisters-make.md                # Generate controllers, models, views
   webisters-testing.md             # Write and run PHPUnit tests
   webisters-config-env.md          # Config files and .env.php
+  webisters-cache.md               # Caching: drivers, tags, locks, flush scope
 .cursor/rules/
   webisters.mdc                    # Cursor IDE rules (always-on)
 ```
